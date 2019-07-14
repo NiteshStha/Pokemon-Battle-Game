@@ -8,6 +8,7 @@ class Pokemon {
     this.imageLoader = imageLoader;
   }
 
+  //Get the Effectiveness of the Player Pokemon Attacks
   getPlayerEffectiveness = (pkMove, opponentPokemon) => {
     //strong against
     if (TypeData[PokemonData[opponentPokemon].type].strengths.indexOf(MoveData[pkMove].type) != -1) {

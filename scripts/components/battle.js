@@ -30,7 +30,6 @@ class Battle {
     this.opponentPokemonIndex = 0;
 
     this.getPlayerHealthBar();
-
     this.getOpponentHealthBar();
 
     this.playerTurn = true;
@@ -41,24 +40,29 @@ class Battle {
     this.victor = '';
   }
 
+  //Get the Player Pokemon Image
   getPlayerPokemonBack = () => {
     this.pokemonBack = this.playerPokemon[this.playerPokemonIndex].name.toLowerCase();
   };
 
+  //Get Player Pokemon Health Bar
   getPlayerHealthBar = () => {
     this.playerHitPoints = this.playerPokemon[this.playerPokemonIndex].hitPoints;
     this.playerHealthBar = (this.playerHitPoints / this.playerPokemon[this.playerPokemonIndex].hitPoints) * 165;
   };
 
+  //Update Player Pokemon Health Bar After Using Items
   updateHealth = () => {
     this.playerHealthBar = (this.playerHitPoints / this.playerPokemon[this.playerPokemonIndex].hitPoints) * 165;
   };
 
+  //Get the Opponent Pokemon Health Bar
   getOpponentHealthBar = () => {
     this.enemyHitPoints = this.opponent.hitPoints[this.opponentPokemonIndex];
     this.enemyHealthBar = (this.enemyHitPoints / this.opponent.hitPoints[this.opponentPokemonIndex]) * 165;
   };
 
+  //Draw the Start of the Battle i.e. display Trainers
   drawBattleStart = () => {
     this.audioLoader.play('battle');
 
@@ -72,6 +76,7 @@ class Battle {
     ctx.fillText('Lets Battle', PLAYER_X, BATTLEBG_HEIGHT + MOVESBG_HEIGHT / 2, MOVESBG_WIDTH);
   };
 
+  //Draw Pokemons and their Status
   drawBattlePokemon = () => {
     ctx.drawImage(this.imageLoader.images.battleBG, 0, 0, BATTLEBG_WIDTH, BATTLEBG_HEIGHT);
     if (!game.animationState) {
@@ -98,6 +103,7 @@ class Battle {
     ctx.fillText('Lvl. ' + this.opponent.level[this.opponentPokemonIndex], ENEMY_POKEMON_LEVEL_X, ENEMY_POKEMON_LEVEL_Y, POKEMON_LEVEL_WIDTH);
   };
 
+  //Draw the Battle Menu
   drawBattleMenu = () => {
     ctx.font = '30px sans-serif';
     ctx.fillText('Choose Action', PLAYER_X, BATTLEBG_HEIGHT + MOVESBG_HEIGHT / 2, 350);
@@ -120,6 +126,7 @@ class Battle {
     }
   };
 
+  //Choose Battle Options i.e. Attack or Bag
   chooseBattleOption = () => {
     if (this.attackOption === true) {
       ctx.clearRect(PLAYER_X, BATTLEBG_HEIGHT + 50, 250, 100);
@@ -175,6 +182,7 @@ class Battle {
     }
   };
 
+  //Select Items From the Bag
   selectBagItem = () => {
     if (game.menuController.left) {
       if (this.bagCountA < 1 && this.bagsHighlightX >= 50) {
@@ -199,6 +207,7 @@ class Battle {
     this.useBagItem();
   };
 
+  // Use Bag Items
   useBagItem = () => {
     if (this.playerTurn === true) {
       if (this.battleState === 'bag') {
@@ -234,6 +243,7 @@ class Battle {
     }
   };
 
+  //Select Attacks using the controls
   selectAttack = () => {
     if (game.menuController.down) {
       this.attackInitialState = false;
@@ -289,6 +299,7 @@ class Battle {
     this.useAttack();
   };
 
+  //Use the selected Attack
   useAttack = () => {
     if (this.playerTurn) {
       if (this.battleState === 'attack') {
@@ -339,6 +350,7 @@ class Battle {
     }
   };
 
+  //Get the Selected Attack From the Pokemon Data and Attack Data
   getAttack = () => {
     if (this.movesHighlightX === 40 && this.movesHighlightY === BATTLEBG_HEIGHT + 40) {
       return 'MOVE_A';
@@ -354,6 +366,7 @@ class Battle {
     }
   };
 
+  //Display the players attack
   displayPlayerAttack = (pkMove, damageMultiplier) => {
     window.cancelAnimationFrame(game.gameEngine);
     game.animationState = true;
@@ -393,6 +406,7 @@ class Battle {
     }, 1500);
   };
 
+  //Get Opponent Attack after the players turn
   getOpponentAttack = () => {
     if (!this.playerTurn) {
       let randomPokemonAttack = PokemonData[this.opponent.randomPokemon[this.opponentPokemonIndex]].moves[Math.floor(Math.random() * PokemonData.Charizard.moves.length)];
@@ -401,6 +415,7 @@ class Battle {
     }
   };
 
+  //Display the Opponent Attack
   displayOpponentAttack = (randomPokemonAttack, opponentDamageMultiplier) => {
     window.cancelAnimationFrame(game.gameEngine);
     ctx.drawImage(this.imageLoader.images.movesBG, 0, 0, 160, 48, 0, BATTLEBG_HEIGHT, MOVESBG_WIDTH, MOVESBG_HEIGHT);
@@ -438,6 +453,7 @@ class Battle {
     }, 1500);
   };
 
+  //Use the Randonm Attack of the opponent
   useOpponenetAttack = randomPokemonAttack => {
     let opponentDamageMultiplier = this.opponent.getOpponentEffectiveness(randomPokemonAttack, this.playerPokemon[this.playerPokemonIndex].type);
     this.playerHitPoints = this.playerHitPoints - MoveData[randomPokemonAttack].damage * opponentDamageMultiplier;
@@ -446,6 +462,7 @@ class Battle {
     this.animation.displayOpponentAnimation();
   };
 
+  //Check whether all the pokemons of either side are unable to battle and display the winner
   displayVictor = () => {
     if (this.victor === 'player') {
       cancelAnimationFrame(game.gameEngine);
@@ -505,6 +522,7 @@ class Battle {
     }
   };
 
+  //Play again Option after the game ends
   playAgain = () => {
     let posX = event.clientX;
     let posY = event.clientY;

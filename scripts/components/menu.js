@@ -8,6 +8,7 @@ class Menu {
     canvas.addEventListener('click', this.selectPokemon);
   }
 
+  //Draw the Pokemon Game Menu and Set of Choosable Pokemons
   drawMenu = () => {
     ctx.clearRect(0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
@@ -17,6 +18,7 @@ class Menu {
     ctx.font = '18px sans-serif';
     ctx.fillText(this.selectedPokemon, this.viewport.width / 2 - 300 / 2, this.viewport.height - 50, 200);
 
+    //Displaying Start option after selecting the required number of pokemons
     if (this.selectedPokemon.length === TOTAL_PLAYER_POKEMONS) {
       ctx.font = '24px sans-serif';
       ctx.fillText('Start', this.viewport.width - 100, this.viewport.height - 50, 200);
@@ -32,6 +34,7 @@ class Menu {
     ctx.drawImage(this.imageLoader.images.gengarFront, MENU_POKEMON_X * 7, MENU_POKEMON_Y, 100, 100);
   };
 
+  //Select Event Function for the Menu
   selectPokemon = event => {
     let posX = event.clientX;
     let posY = event.clientY;
@@ -103,6 +106,7 @@ class Menu {
       }
     }
 
+    //Start option Event
     if (this.selectedPokemon.length === TOTAL_PLAYER_POKEMONS) {
       if (posX >= this.viewport.width - 120 && posX <= this.viewport.width && posY >= this.viewport.height - 80 && posY <= this.viewport.height) {
         game.currentState = 'battleStart';
