@@ -1,6 +1,11 @@
 const canvas = document.getElementById('canvasElement');
 const ctx = canvas.getContext('2d');
 
+const TOTAL_PLAYER_POKEMONS = 2;
+const TOTAL_OPPONENT_POKEMONS = 2;
+
+document.getElementById('totalPokemons').innerHTML = TOTAL_PLAYER_POKEMONS;
+
 const LEFT_ARROW = 37;
 const UP_ARROW = 38;
 const RIGHT_ARROW = 39;
@@ -11,9 +16,6 @@ const S_KEY = 83;
 
 let wins = 0;
 let losses = 0;
-
-const TOTAL_PLAYER_POKEMONS = 2;
-const TOTAL_OPPONENT_POKEMONS = 2;
 
 const VIEWPORT_WIDTH = 960;
 const VIEWPORT_HEIGHT = 600;

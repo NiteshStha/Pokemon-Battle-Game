@@ -18,9 +18,15 @@ canvas {
 }
 
 .keys-table {
-  margin-bottom: 100px;
+  margin-bottom: 80px;
 }
 
 .score {
+  font-weight: bolder;
+}
+
+.selection {
+  margin-top: 50px;
+  font-size: 40px;
   font-weight: bolder;
 }
