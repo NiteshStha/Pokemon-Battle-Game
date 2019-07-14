@@ -10,13 +10,20 @@ class Battle {
 
     this.getPlayerPokemonBack();
 
-    this.movesHighlightX = 40;
-    this.movesHighlightY = BATTLEBG_HEIGHT + 40;
+    this.movesHighlightX = MOVE_HIGHLIGHT_X;
+    this.movesHighlightY = MOVE_HIGHLIGHT_Y;
+
+    this.bagsHighlightX = MOVE_HIGHLIGHT_X;
+    this.bagsHighlightY = MOVE_HIGHLIGHT_Y;
+
     this.attackPosition = 1;
     this.countA = 0;
     this.countB = 0;
     this.countC = 0;
     this.countD = 0;
+
+    this.bagCountA = 0;
+    this.bagCountB = 0;
 
     this.count = 0;
 
@@ -43,6 +50,10 @@ class Battle {
     this.playerHealthBar = (this.playerHitPoints / this.playerPokemon[this.playerPokemonIndex].hitPoints) * 165;
   };
 
+  updateHealth = () => {
+    this.playerHealthBar = (this.playerHitPoints / this.playerPokemon[this.playerPokemonIndex].hitPoints) * 165;
+  };
+
   getOpponentHealthBar = () => {
     this.enemyHitPoints = this.opponent.hitPoints[this.opponentPokemonIndex];
     this.enemyHealthBar = (this.enemyHitPoints / this.opponent.hitPoints[this.opponentPokemonIndex]) * 165;
@@ -62,48 +73,49 @@ class Battle {
   };
 
   drawBattlePokemon = () => {
-    //Draw Player Pokemon
     ctx.drawImage(this.imageLoader.images.battleBG, 0, 0, BATTLEBG_WIDTH, BATTLEBG_HEIGHT);
     if (!game.animationState) {
       ctx.drawImage(this.imageLoader.images.movesBG, 0, BATTLEBG_HEIGHT, MOVESBG_WIDTH, MOVESBG_HEIGHT);
     }
+
+    //Draw Player Pokemon
     ctx.drawImage(this.imageLoader.images[this.pokemonBack + 'Back'], PLAYER_X, PLAYER_Y, PLAYER_WIDTH, PLAYER_HEIGHT);
 
-    ctx.drawImage(this.imageLoader.images.healthBarLine, 180, 50, this.enemyHealthBar, 50);
-    ctx.drawImage(this.imageLoader.images.healthBarBox, 40, 20, 350, 100);
+    ctx.drawImage(this.imageLoader.images.healthBarLine, PLAYER_HEALTH_BAR_LINE_X, PLAYER_HEALTH_BAR_LINE_Y, this.playerHealthBar, PLAYER_HEALTH_BAR_LINE_HEIGHT);
+    ctx.drawImage(this.imageLoader.images.healthBarBox, PLAYER_HEALTH_BOX_X, PLAYER_HEALTH_BOX_Y, HEALTH_BOX_WIDTH, HEALTH_BOX_HEIGHT);
     ctx.font = '28px sans-serif';
-    ctx.fillText(this.opponent.randomPokemon[this.opponentPokemonIndex], 70, 60, 150);
+    ctx.fillText(this.playerPokemon[this.playerPokemonIndex].name, PLAYER_POKEMON_NAME_X, PLAYER_POKEMON_NAME_Y, POKEMON_NAME_WIDTH);
     ctx.font = '20px sans-serif';
-    ctx.fillText('Lvl. ' + this.opponent.level[this.opponentPokemonIndex], 270, 60, 150);
+    ctx.fillText('Lvl. ' + this.playerPokemon[this.playerPokemonIndex].level, PLAYER_POKEMON_LEVEL_X, PLAYER_POKEMON_LEVEL_Y, POKEMON_LEVEL_WIDTH);
 
-    ctx.drawImage(this.imageLoader.images.healthBarLine, BATTLEBG_WIDTH - 210, BATTLEBG_HEIGHT - 100, this.playerHealthBar, 50);
-    ctx.drawImage(this.imageLoader.images.healthBarBox, BATTLEBG_WIDTH - 350, BATTLEBG_HEIGHT - 120, 350, 100);
-    ctx.font = '28px sans-serif';
-    ctx.fillText(this.playerPokemon[this.playerPokemonIndex].name, BATTLEBG_WIDTH - 320, BATTLEBG_HEIGHT - 80, 150);
-    ctx.font = '20px sans-serif';
-    ctx.fillText('Lvl. ' + this.playerPokemon[this.playerPokemonIndex].level, BATTLEBG_WIDTH - 120, BATTLEBG_HEIGHT - 80, 150);
-
+    //Draw Opponent Pokemon
     ctx.drawImage(this.imageLoader.images[this.opponent.getEnemyPokemonImage(this.opponentPokemonIndex)], OPPONENT_X, OPPONENT_Y, PLAYER_WIDTH, PLAYER_HEIGHT);
+    ctx.drawImage(this.imageLoader.images.healthBarLine, ENEMY_HEALTH_BAR_LINE_X, ENEMY_HEALTH_BAR_LINE_Y, this.enemyHealthBar, ENEMY_HEALTH_BAR_LINE_HEIGHT);
+    ctx.drawImage(this.imageLoader.images.healthBarBox, ENEMY_HEALTH_BOX_X, ENEMY_HEALTH_BOX_Y, HEALTH_BOX_WIDTH, HEALTH_BOX_HEIGHT);
+    ctx.font = '28px sans-serif';
+    ctx.fillText(this.opponent.randomPokemon[this.opponentPokemonIndex], ENEMY_POKEMON_NAME_X, ENEMY_POKEMON_NAME_Y, POKEMON_NAME_WIDTH);
+    ctx.font = '20px sans-serif';
+    ctx.fillText('Lvl. ' + this.opponent.level[this.opponentPokemonIndex], ENEMY_POKEMON_LEVEL_X, ENEMY_POKEMON_LEVEL_Y, POKEMON_LEVEL_WIDTH);
   };
 
   drawBattleMenu = () => {
     ctx.font = '30px sans-serif';
     ctx.fillText('Choose Action', PLAYER_X, BATTLEBG_HEIGHT + MOVESBG_HEIGHT / 2, 350);
 
-    ctx.fillText('Attack', MOVESBG_WIDTH - 250, BATTLEBG_HEIGHT + 70, 150);
-    ctx.fillText('Bag', MOVESBG_WIDTH - 250, BATTLEBG_HEIGHT + 120, 150);
+    ctx.fillText('Attack', ATTACK_OPTION_POSITION_X, ATTACK_OPTION_POSITION_Y, OPTION_WIDTH);
+    ctx.fillText('Bag', BAG_OPTION_POSITION_X, BAG_OPTION_POSITION_Y, OPTION_WIDTH);
 
     if (this.battleState === 'option') {
       if (game.menuController.down) {
         this.bagOption = true;
         this.attackOption = false;
-        ctx.strokeRect(MOVESBG_WIDTH - 260, BATTLEBG_HEIGHT + 80, 120, 50);
+        ctx.strokeRect(OPTION_DOWN_POSITION_X, OPTION_DOWN_POSITION_Y, OPTION_HIGHLIGHT_WIDTH, OPTION_HIGHLIGHT_HEIGHT);
       }
 
       if (game.menuController.up) {
         this.attackOption = true;
         this.bagOption = false;
-        ctx.strokeRect(MOVESBG_WIDTH - 260, BATTLEBG_HEIGHT + 40, 120, 50);
+        ctx.strokeRect(OPTION_UP_POSITION_X, OPTION_UP_POSITION_Y, OPTION_HIGHLIGHT_WIDTH, OPTION_HIGHLIGHT_HEIGHT);
       }
     }
   };
@@ -158,13 +170,69 @@ class Battle {
     }
 
     if (this.battleState === 'bag') {
-      ctx.strokeRect(this.movesHighlightX, this.movesHighlightY, 200, 40);
+      ctx.strokeRect(this.bagsHighlightX, this.bagsHighlightY, 200, 40);
+      this.selectBagItem();
     }
-
-    this.selectBagItem();
   };
 
-  selectBagItem = () => {};
+  selectBagItem = () => {
+    if (game.menuController.left) {
+      if (this.bagCountA < 1 && this.bagsHighlightX >= 50) {
+        this.audioLoader.play('beep');
+        this.bagsHighlightX -= 250;
+        this.bagCountA++;
+        this.bagCountB = 0;
+      }
+      ctx.strokeRect(this.bagsHighlightX, this.bagsHighlightY, 200, 40);
+    }
+
+    if (game.menuController.right) {
+      if (this.bagCountB < 1 && this.bagsHighlightX <= 250) {
+        this.audioLoader.play('beep');
+        this.bagsHighlightX += 250;
+        this.bagCountB++;
+        this.bagCountA = 0;
+      }
+      ctx.strokeRect(this.bagsHighlightX, this.bagsHighlightY, 200, 40);
+    }
+
+    this.useBagItem();
+  };
+
+  useBagItem = () => {
+    if (this.playerTurn === true) {
+      if (this.battleState === 'bag') {
+        if (game.menuController.s) {
+          if (this.bagsHighlightX === 40 && this.bagsHighlightY === BATTLEBG_HEIGHT + 40) {
+            this.getPlayerHealthBar();
+            this.playerTurn = false;
+            game.animationState = true;
+            ctx.clearRect(PLAYER_X - 70, BATTLEBG_HEIGHT + 35, 465, 120);
+            ctx.font = '28px sans-serif';
+            ctx.fillText('Player Used Full Restore', PLAYER_X, BATTLEBG_HEIGHT + MOVESBG_HEIGHT / 2, MOVESBG_WIDTH);
+            setTimeout(() => {
+              this.getOpponentAttack();
+            }, 1500);
+          }
+          if (this.bagsHighlightX === 40 + 250 && this.bagsHighlightY === BATTLEBG_HEIGHT + 40) {
+            this.playerHitPoints += ItemData['Hyper Potion'].HP;
+            if (this.playerHitPoints > this.playerPokemon[this.playerPokemonIndex].hitPoints) {
+              this.playerHitPoints = this.playerPokemon[this.playerPokemonIndex].hitPoints;
+            }
+            this.updateHealth();
+            this.playerTurn = false;
+            game.animationState = true;
+            ctx.clearRect(PLAYER_X - 70, BATTLEBG_HEIGHT + 35, 465, 120);
+            ctx.font = '28px sans-serif';
+            ctx.fillText('Player Used ' + ItemData['Hyper Potion'].Name, PLAYER_X, BATTLEBG_HEIGHT + MOVESBG_HEIGHT / 2, MOVESBG_WIDTH);
+            setTimeout(() => {
+              this.getOpponentAttack();
+            }, 1500);
+          }
+        }
+      }
+    }
+  };
 
   selectAttack = () => {
     if (game.menuController.down) {
