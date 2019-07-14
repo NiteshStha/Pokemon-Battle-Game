@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Pokemon Battle Simulation</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div class="wrapper clearfix">
+      <canvas id="canvasElement"></canvas>
+      <div class="keys">
+        <table class="keys-table" cellpadding="10px">
+          <tr>
+            <th>Keys</th>
+            <th></th>
+            <th>Functions</th>
+          </tr>
+          <tr>
+            <td>Up Arrow</td>
+            <td>--></td>
+            <td>Up</td>
+          </tr>
+          <tr>
+            <td>Down Arrow</td>
+            <td>--></td>
+            <td>Down</td>
+          </tr>
+          <tr>
+            <td>Left Arrow</td>
+            <td>--></td>
+            <td>Left</td>
+          </tr>
+          <tr>
+            <td>Right Arrow</td>
+            <td>--></td>
+            <td>Right</td>
+          </tr>
+          <tr>
+            <td>Enter</td>
+            <td>--></td>
+            <td>Choose Option</td>
+          </tr>
+          <tr>
+            <td>S</td>
+            <td>--></td>
+            <td>Choose Attack</td>
+          </tr>
+        </table>
+
+        <table class="score" cellpadding="15px">
+          <tr>
+            <td>Total Wins</td>
+            <td>:</td>
+            <td id="wins">0</td>
+          </tr>
+          <tr>
+            <td>Total Losses</td>
+            <td>:</td>
+            <td id="losses">0</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <script src="scripts/data/PokemonData.js"></script>
+    <script src="scripts/data/MoveData.js"></script>
+    <script src="scripts/data/TypeData.js"></script>
+    <script src="scripts/data/AnimationData.js"></script>
+    <script src="scripts/utilities/global.js"></script>
+    <script src="scripts/utilities/imageLoader.js"></script>
+    <script src="scripts/utilities/audioLoader.js"></script>
+    <script src="scripts/utilities/controller.js"></script>
+    <script src="scripts/components/viewport.js"></script>
+    <script src="scripts/components/menu.js"></script>
+    <script src="scripts/components/battle.js"></script>
+    <script src="scripts/components/pokemon.js"></script>
+    <script src="scripts/components/opponent.js"></script>
+    <script src="scripts/components/animation.js"></script>
+    <script src="scripts/main.js"></script>
+  </body>
+</html>

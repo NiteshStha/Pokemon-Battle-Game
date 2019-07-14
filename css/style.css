@@ -1,0 +1,26 @@
+.clearfix::after {
+  content: '';
+  clear: both;
+  display: table;
+}
+
+canvas {
+  border: 1px solid;
+  position: fixed;
+  float: left;
+}
+
+.keys {
+  width: 500px;
+  float: right;
+  font-size: 20px;
+  text-align: center;
+}
+
+.keys-table {
+  margin-bottom: 100px;
+}
+
+.score {
+  font-weight: bolder;
+}
