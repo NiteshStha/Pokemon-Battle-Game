@@ -16,6 +16,9 @@ class Battle {
     this.bagsHighlightX = MOVE_HIGHLIGHT_X;
     this.bagsHighlightY = MOVE_HIGHLIGHT_Y;
 
+    this.item1 = 5;
+    this.item2 = 5;
+
     this.attackPosition = 1;
     this.countA = 0;
     this.countB = 0;
@@ -138,8 +141,8 @@ class Battle {
 
     if (this.bagOption === true) {
       ctx.clearRect(PLAYER_X, BATTLEBG_HEIGHT + 50, 250, 100);
-      ctx.fillText('Full Restore', 50, BATTLEBG_HEIGHT + 70, 150);
-      ctx.fillText('Hyper Potion', 300, BATTLEBG_HEIGHT + 70, 150);
+      ctx.fillText('Full Restore x' + this.item1, 50, BATTLEBG_HEIGHT + 70, 150);
+      ctx.fillText('Hyper Potion x' + this.item2, 300, BATTLEBG_HEIGHT + 70, 150);
     }
 
     if (this.battleState === 'option' && this.count < 1) {
@@ -212,7 +215,8 @@ class Battle {
     if (this.playerTurn === true) {
       if (this.battleState === 'bag') {
         if (game.menuController.s) {
-          if (this.bagsHighlightX === 40 && this.bagsHighlightY === BATTLEBG_HEIGHT + 40) {
+          if (this.bagsHighlightX === 40 && this.bagsHighlightY === BATTLEBG_HEIGHT + 40 && this.item1 > 0) {
+            this.item1--;
             this.getPlayerHealthBar();
             this.playerTurn = false;
             game.animationState = true;
@@ -221,9 +225,10 @@ class Battle {
             ctx.fillText('Player Used Full Restore', PLAYER_X, BATTLEBG_HEIGHT + MOVESBG_HEIGHT / 2, MOVESBG_WIDTH);
             setTimeout(() => {
               this.getOpponentAttack();
-            }, 1500);
+            }, BATTLE_DIALOGUE_DELAY);
           }
-          if (this.bagsHighlightX === 40 + 250 && this.bagsHighlightY === BATTLEBG_HEIGHT + 40) {
+          if (this.bagsHighlightX === 40 + 250 && this.bagsHighlightY === BATTLEBG_HEIGHT + 40 && this.item2 > 0) {
+            this.item2--;
             this.playerHitPoints += ItemData['Hyper Potion'].HP;
             if (this.playerHitPoints > this.playerPokemon[this.playerPokemonIndex].hitPoints) {
               this.playerHitPoints = this.playerPokemon[this.playerPokemonIndex].hitPoints;
@@ -236,7 +241,7 @@ class Battle {
             ctx.fillText('Player Used ' + ItemData['Hyper Potion'].Name, PLAYER_X, BATTLEBG_HEIGHT + MOVESBG_HEIGHT / 2, MOVESBG_WIDTH);
             setTimeout(() => {
               this.getOpponentAttack();
-            }, 1500);
+            }, BATTLE_DIALOGUE_DELAY);
           }
         }
       }
@@ -401,9 +406,9 @@ class Battle {
         setTimeout(() => {
           game.runGame();
           this.getOpponentAttack();
-        }, 1500);
+        }, BATTLE_DIALOGUE_DELAY);
       }
-    }, 1500);
+    }, BATTLE_DIALOGUE_DELAY);
   };
 
   //Get Opponent Attack after the players turn
@@ -448,9 +453,9 @@ class Battle {
       if (this.victor === '') {
         setTimeout(() => {
           game.runGame();
-        }, 1500);
+        }, BATTLE_DIALOGUE_DELAY);
       }
-    }, 1500);
+    }, BATTLE_DIALOGUE_DELAY);
   };
 
   //Use the Randonm Attack of the opponent
@@ -478,7 +483,7 @@ class Battle {
           this.victor = '';
           setTimeout(() => {
             game.runGame();
-          }, 2000);
+          }, BATTLE_DIALOGUE_DELAY);
         } else {
           wins++;
           game.updateScores();
@@ -490,7 +495,7 @@ class Battle {
           ctx.drawImage(this.imageLoader.images.win, VIEWPORT_WIDTH / 2 - 500 / 2, VIEWPORT_HEIGHT / 2 - 120 / 2, 500, 120);
           ctx.drawImage(this.imageLoader.images.playAgain, PLAY_AGAIN_X, PLAY_AGAIN_Y, PLAY_AGAIN_WIDTH, PLAY_AGAIN_HEIGHT);
         }
-      }, 1000);
+      }, BATTLE_DIALOGUE_DELAY);
     }
     if (this.victor === 'enemy') {
       cancelAnimationFrame(game.gameEngine);
@@ -507,7 +512,7 @@ class Battle {
           this.victor = '';
           setTimeout(() => {
             game.runGame();
-          }, 2000);
+          }, BATTLE_DIALOGUE_DELAY);
         } else {
           losses++;
           game.updateScores();
@@ -518,7 +523,7 @@ class Battle {
           ctx.drawImage(this.imageLoader.images.lose, VIEWPORT_WIDTH / 2 - 500 / 2, VIEWPORT_HEIGHT / 2 - 120 / 2, 500, 120);
           ctx.drawImage(this.imageLoader.images.playAgain, PLAY_AGAIN_X, PLAY_AGAIN_Y, PLAY_AGAIN_WIDTH, PLAY_AGAIN_HEIGHT);
         }
-      }, 1000);
+      }, BATTLE_DIALOGUE_DELAY);
     }
   };
 

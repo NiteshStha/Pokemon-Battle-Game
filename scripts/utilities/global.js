@@ -126,3 +126,7 @@ const LONG_ATTACK_POSITION_Y_DECREASE = 20;
 const ATTACK_ANIMATION_SPEED = 100;
 const ATTACK_ANIMATION_DELAY = 300;
 // Animation Variables
+
+//Battle Dialogue Delay
+
+const BATTLE_DIALOGUE_DELAY = 1500;
